@@ -15,7 +15,7 @@ A single-file browser game: monthly turn-based simulation as the head of state o
   - `build-page.js` builds `dist/artifact.html` (the playable game, fully self-contained) and `dist/test.html` (exposes `window.__hos = {E, UI, enter}` for automated testing).
   - `prepare.js` is a one-time script that regenerates `src/worlddata.json` / `src/mapdata.json` from the `d3-geo`/`world-atlas`/`world-countries` npm packages. Only needed if the underlying map/country data changes; requires `npm install` first.
 - `test/` — Node test scripts. Most (`sim.js`, `story.js`, `proj.js`, `empire.js`, `secede.js`, `credit.js`, `conq.js`, `saves.js`, `evfilter.js`, `govterm.js`, `pcuse.js`, ...) run headlessly against `dist/engine.js` with no dependencies beyond Node itself. A handful (`*shot*.js`, `ui.js`, `uidesk.js`, `uimobile.js`, `uimapdock.js`) drive `dist/test.html` with Playwright for visual/UI checks and need `npm install` plus a Chromium build.
-- `docs/index.html` — a copy of `dist/artifact.html`, kept in sync so GitHub Pages can serve the game directly from this repo (Pages only serves from the repo root or `/docs`, not `/dist`).
+- `index.html` — a copy of `dist/artifact.html` at the repo root, kept in sync so GitHub Pages can serve the game directly from this repo (Pages only serves from the repo root or `/docs`, not `/dist`). A `.nojekyll` file sits alongside it so GitHub does not run the page through Jekyll (which is what was rendering `README.md` instead of the game).
 
 ## Building
 
@@ -24,7 +24,7 @@ No npm install needed for the normal build loop:
 ```
 node build/bundle-engine.js   # -> dist/engine.js
 node build/build-page.js      # -> dist/artifact.html, dist/test.html
-cp dist/artifact.html docs/index.html   # keep the Pages copy in sync
+cp dist/artifact.html index.html        # keep the Pages copy in sync
 ```
 
 ## Testing
@@ -51,4 +51,4 @@ node test/ui.js
 
 ## Enabling GitHub Pages
 
-Settings → Pages → Source: "Deploy from a branch" → Branch: `main`, folder: `/docs` → Save. The game will then be live at `https://super-gill.github.io/headofstate/`.
+Settings → Pages → Source: "Deploy from a branch" → Branch: `main`, folder: `/ (root)` → Save. The game will then be live at `https://super-gill.github.io/headofstate/`.
