@@ -1,0 +1,11 @@
+const fs = require('fs'), path = require('path');
+require('./bundle-engine.js');
+const src = f => fs.readFileSync(path.join(__dirname, '../src', f), 'utf8');
+let engine = fs.readFileSync(path.join(__dirname, '../dist/engine.js'), 'utf8').replace(/if\(typeof module[^\n]*\n?$/, '');
+const ui = ['u1_base.js', 'u2_views.js', 'u3_flow.js'].map(src).join('\n');
+const script = engine + '\n' + src('ui_map.js') + '\n(function(){\n"use strict";\n' + ui + '\n})();\n';
+let html = src('template.html').replace('/*STYLE*/', () => src('style.css')).replace('/*SCRIPT*/', () => script.replace(/<\/script/g, '<\\/script'));
+fs.writeFileSync(path.join(__dirname, '../dist/artifact.html'), html);
+const wrap = '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>' + html + '</body></html>';
+fs.writeFileSync(path.join(__dirname, '../dist/test.html'), wrap);
+console.log('artifact bytes', html.length);
